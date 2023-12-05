@@ -11,7 +11,7 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    def imageName = 'nginx-app'
+                    def imageName = 'muditsoni32/my-nginx-wordpress-image:b1'
                     def dockerImage = docker.build(imageName)
                     docker.withRegistry('https://hub.docker.com', '785a3777-2313-4836-81fb-3f8e1f596082') {
                         dockerImage.push('latest')
