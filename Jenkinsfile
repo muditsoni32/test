@@ -14,7 +14,7 @@ pipeline {
                 script {
                     // Build Docker image
                         
-                         sh "sudo cd /home/jenkins && docker build -t my-nginx-wordpress-image ."
+                         sh "cd /home/jenkins && docker build -t my-nginx-wordpress-image ."
                          sh "sudo docker image tag my-nginx-wordpress-image:latest muditsoni32/my-nginx-wordpress-image:latest"
 
                     
