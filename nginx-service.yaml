@@ -7,6 +7,8 @@ spec:
     app: nginx
   ports:
   - protocol: TCP
-    port: 1010
+    port: 9092
     targetPort: 80
+  externalIPs:
+  - 192.168.1.94
   type: LoadBalancer
