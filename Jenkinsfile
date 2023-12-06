@@ -13,6 +13,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image
+                         sh "cd /root"
                          sh "docker build -t my-nginx-wordpress-image . "
                     
                     // Push Docker image to registry
