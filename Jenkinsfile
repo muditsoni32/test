@@ -29,13 +29,18 @@ pipeline {
             steps {
                 script {
                     def kubernetesNamespace = 'default'
-                    def kubernetesServiceName = 'nginx-service'
+                    def kubeconfigCredentialId = '1c90b3a7-fd8c-44a2-95e4-a093fc950bea'
+                    
+                    withCredentials([file(credentialsId: kubeconfigCredentialId, variable: 'KUBECONFIG')]) {
 
-                    // Apply Kubernetes manifests
-                    sh "kubectl apply -f kubernetes/nginx-deployment.yaml -n ${kubernetesNamespace}"
-                    sh "kubectl apply -f kubernetes/nginx-service.yaml -n ${kubernetesNamespace}"
+                     sh """
+                    export KUBECONFIG=\$KUBECONFIG
+                    sudo kubectl apply -f kubernetes/nginx-deployment.yaml -n ${kubernetesNamespace}
+                    sudo kubectl apply -f kubernetes/nginx-service.yaml -n ${kubernetesNamespace}
+                """
                 }
             }
         }
     }
+}
 }
