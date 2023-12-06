@@ -15,7 +15,7 @@ pipeline {
                     // Build Docker image
                     withDockerServer([uri: "tcp://localhost:2375"]) {
                         script {
-                            docker.build('muditsoni32/my-nginx-wordpress-image:b1', '-f /root/Dockerfile')
+                            sh "docker build -t muditsoni32/my-nginx-wordpress-image:b1 -f /root/Dockerfile "
                         }
                     }
                     // Push Docker image to registry
