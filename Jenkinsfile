@@ -35,8 +35,8 @@ pipeline {
 
                      sh """
                     export KUBECONFIG=\$KUBECONFIG
-                    sudo kubectl apply -f kubernetes/nginx-deployment.yaml -n ${kubernetesNamespace}
-                    sudo kubectl apply -f kubernetes/nginx-service.yaml -n ${kubernetesNamespace}
+                    sudo kubectl apply -f nginx-deployment.yaml -n ${kubernetesNamespace}
+                    sudo kubectl apply -f nginx-service.yaml -n ${kubernetesNamespace}
                 """
                 }
             }
