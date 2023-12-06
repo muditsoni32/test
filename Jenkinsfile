@@ -12,10 +12,12 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    def imageName = 'muditsoni32/my-nginx-wordpress-image:b1'
-                    def dockerImage = docker.build(imageName)
-                    docker.withRegistry('https://hub.docker.com', '785a3777-2313-4836-81fb-3f8e1f596082') {
-                        dockerImage.push('latest')
+                    // Build Docker image
+                    docker.build('muditsoni32/my-nginx-wordpress-image:b1')
+
+                    // Push Docker image to registry
+                    docker.withRegistry('https://hub.docker.com/', '785a3777-2313-4836-81fb-3f8e1f596082') {
+                        docker.image('muditsoni32/my-nginx-wordpress-image:b1').push()
                     }
                 }
             }
@@ -27,6 +29,7 @@ pipeline {
                     def kubernetesNamespace = 'default'
                     def kubernetesServiceName = 'nginx-service'
 
+                    // Apply Kubernetes manifests
                     sh "kubectl apply -f kubernetes/nginx-deployment.yaml -n ${kubernetesNamespace}"
                     sh "kubectl apply -f kubernetes/nginx-service.yaml -n ${kubernetesNamespace}"
                 }
