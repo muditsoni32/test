@@ -18,7 +18,7 @@ pipeline {
 
                     
                     // Push Docker image to registry
-                    docker.withRegistry('https://hub.docker.com', '785a3777-2313-4836-81fb-3f8e1f596082') {
+                    docker.withRegistry('https://registry.hub.docker.com', '785a3777-2313-4836-81fb-3f8e1f596082') {
                         docker.image('muditsoni32/my-nginx-wordpress-image:b1').push()
                     }
                 }
