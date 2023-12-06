@@ -15,7 +15,7 @@ pipeline {
                     // Build Docker image
                     withDockerServer([uri: "tcp://localhost:2375"]) {
                         script {
-                            sh "docker build -t my-nginx-wordpress-image -f /root/Dockerfile "
+                            sh "docker build -t my-nginx-wordpress-image . "
                         }
                     }
                     // Push Docker image to registry
