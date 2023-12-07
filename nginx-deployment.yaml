@@ -17,3 +17,10 @@ spec:
         image: muditsoni32/my-nginx-wordpress-image:latest
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: hostpath-volume
+          mountPath: /usr/share/nginx/
+      volumes:
+      - name: hostpath-volume
+        hostPath:
+         path: /mnt/html/
