@@ -19,8 +19,9 @@ spec:
         - containerPort: 80
         volumeMounts:
         - name: hostpath-volume
-          mountPath: /usr/share/nginx/
+          mountPath: /usr/share/nginx/html
       volumes:
       - name: hostpath-volume
         hostPath:
          path: /mnt/html/
+         type: Directory
