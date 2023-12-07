@@ -23,5 +23,5 @@ spec:
       volumes:
       - name: hostpath-volume
         hostPath:
-         path: /mnt/html/
+         path: /mnt/
          type: Directory
