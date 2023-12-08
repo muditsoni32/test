@@ -17,4 +17,10 @@ spec:
         image: muditsoni32/my-nginx-wordpress-image:latest
         ports:
         - containerPort: 80
-        
+      volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d  # Change this path to the location where NGINX expects its configuration
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-configmap  # Change this to the name of your ConfigMap  
