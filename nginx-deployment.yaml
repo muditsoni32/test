@@ -18,7 +18,7 @@ spec:
         ports:
         - containerPort: 80
         volumeMounts:
-        - name: nginx-config
+        - name: my-volume
           mountPath: /usr/share/nginx/html  # Change this path to the location where NGINX expects its configuration
       volumes:
       - name: my-volume
