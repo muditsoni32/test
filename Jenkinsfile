@@ -12,7 +12,7 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    // Build Docker image
+                    // Build Docker image1
                         
                          sh "cd /home/jenkins && docker build -t my-nginx-wordpress-image ."
                          sh "sudo docker image tag my-nginx-wordpress-image:latest muditsoni32/my-nginx-wordpress-image:latest"
