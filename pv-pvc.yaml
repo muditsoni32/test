@@ -5,6 +5,7 @@ metadata:
   labels:
     type: local
 spec:
+  storageClassName: manual
   capacity:
     storage: 5Gi
   accessModes:
@@ -19,6 +20,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: my-pvc
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
