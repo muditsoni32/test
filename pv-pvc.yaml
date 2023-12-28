@@ -5,10 +5,11 @@ metadata:
   labels:
     type: local
 spec:
+  storageClassName: standard
   capacity:
     storage: 5Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   hostPath:
     path: "/home/data"
 
@@ -19,8 +20,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: my-pvc
 spec:
+  storageClassName: standard
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi
