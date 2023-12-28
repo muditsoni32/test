@@ -5,7 +5,7 @@ metadata:
   labels:
     type: local
 spec:
-  storageClassName: hostPath
+  storageClassName: my-hostpath-sc
   capacity:
     storage: 5Gi
   accessModes:
@@ -20,7 +20,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: my-pvc
 spec:
-  storageClassName: hostPath
+  storageClassName: my-hostpath-sc
   accessModes:
     - ReadWriteMany
   resources:
