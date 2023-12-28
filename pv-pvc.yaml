@@ -10,7 +10,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/home/Data"
+    path: "/home/data"
 
 ---
 
