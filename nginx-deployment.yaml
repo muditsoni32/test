@@ -17,7 +17,7 @@ spec:
         persistentVolumeClaim:
           claimName: my-pvc 
       containers:
-      - name: nginx
+      - name: nginx-deployment-694fcf987c-5vtxs
         image: muditsoni32/my-nginx-wordpress-image:latest
         ports:
         - containerPort: 80
