@@ -15,7 +15,8 @@ spec:
       volumes:
       - name: my-volume
         persistentVolumeClaim:
-          claimName: my-pvc 
+          claimName: my-pvc
+          type: DirectoryOrCreate 
       containers:
       - name: nginx-deployment
         image: muditsoni32/my-nginx-wordpress-image:latest
