@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: github-transfer-pod
+spec:
+  initContainers:
+  - name: git-clone
+    image: alpine/git
+    args:
+    - clone
+    - https://github.com/muditsoni32/test.git
+    - /master/hello.txt
+  containers:
+  - name: main-container
+    image: muditsoni32/my-nginx-wordpress-image:latest
+    volumeMounts:
+    - name: code-volume
+      mountPath: /var/www/html/
+  volumes:
+  - name: code-volume
+    emptyDir: {}
