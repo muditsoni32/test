@@ -52,7 +52,7 @@ pipeline {
 
                     // Apply Kubernetes YAML with initContainer for GitHub clone
                     sh """
-                        kubectl apply -f github-transfer-pod.yaml
+                        kubectl apply -f github-transfer-pod.yaml --v=8
                         kubectl wait --for=condition=ready pod/${podName} --timeout=300s
                         kubectl logs ${podName}
                     """
