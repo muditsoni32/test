@@ -65,7 +65,7 @@ pipeline {
         always {
             // Cleanup
             script {
-                sh "kubectl delete pod github-transfer-pod"
+                sh "kubectl delete pod github-transfer-pod --kubeconfig=/home/jenkins/config"
             }
         }
     }
