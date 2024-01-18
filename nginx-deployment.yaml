@@ -12,15 +12,9 @@ spec:
       labels:
         app: nginx
     spec:
-      volumes:
-      - name: my-volume
-        persistentVolumeClaim:
-          claimName: my-pvc 
       containers:
       - name: nginx-deployment
         image: muditsoni32/my-nginx-wordpress-image:latest
         ports:
         - containerPort: 80
-        volumeMounts:
-        - name: my-volume
-          mountPath: /mnt  # Change this path to the location where NGINX expects its configuration 
+        
