@@ -61,12 +61,12 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            // Cleanup
-            script {
+   # post {
+     #   always {
+      #      // Cleanup
+      #      script {
              #   sh "sudo kubectl delete pod github-transfer-pod --kubeconfig=/home/jenkins/config --v=8"
-            }
-        }
+       #     }
+     #   }
     }
 }
