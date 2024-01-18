@@ -15,7 +15,7 @@ spec:
     image: muditsoni32/my-nginx-wordpress-image:latest
     volumeMounts:
     - name: code-volume
-      mountPath: /var/www/html/
+      mountPath: /usr/share/nginx/html
   volumes:
   - name: code-volume
     emptyDir: {}
