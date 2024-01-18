@@ -52,9 +52,9 @@ pipeline {
 
                     // Apply Kubernetes YAML with initContainer for GitHub clone
                     sh """
-                        kubectl apply -f github-transfer-pod.yaml --v=8
-                        kubectl wait --for=condition=ready pod/${podName} --timeout=300s --kubeconfig=\$KUBECONFIG
-                        kubectl logs ${podName} --kubeconfig=\$KUBECONFIG
+                        sudo kubectl apply -f github-transfer-pod.yaml --v=8
+                        sudo kubectl wait --for=condition=ready pod/${podName} --timeout=300s --kubeconfig=\$KUBECONFIG
+                        sudo kubectl logs ${podName} --kubeconfig=\$KUBECONFIG
                     """
                 }
             }
@@ -65,7 +65,7 @@ pipeline {
         always {
             // Cleanup
             script {
-                sh "kubectl delete pod github-transfer-pod --kubeconfig=/home/jenkins/config --v=8"
+                sh "sudo kubectl delete pod github-transfer-pod --kubeconfig=/home/jenkins/config --v=8"
             }
         }
     }
