@@ -13,6 +13,8 @@ spec:
   containers:
   - name: main-container
     image: muditsoni32/my-nginx-wordpress-image:latest
+    ports:
+    - containerPort: 80
     volumeMounts:
     - name: code-volume
       mountPath: /usr/share/nginx/html
