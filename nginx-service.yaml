@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: github-transfer-service
+  name: nginx
 spec:
   selector:
-    app: github-transfer-pod
+    app: nginx
   ports:
   - protocol: TCP
     port: 80
