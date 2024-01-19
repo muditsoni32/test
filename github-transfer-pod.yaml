@@ -2,22 +2,69 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: github-transfer-pod
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {
+        "apiVersion": "v1",
+        "kind": "Pod",
+        "metadata": {
+          "annotations": {},
+          "name": "github-transfer-pod",
+          "namespace": "default"
+        },
+        "spec": {
+          "containers": [
+            {
+              "image": "muditsoni32/my-nginx-wordpress-image:latest",
+              "name": "main-container",
+              "ports": [
+                {
+                  "containerPort": 80
+                }
+              ],
+              "volumeMounts": [
+                {
+                  "mountPath": "/usr/share/nginx/html",
+                  "name": "code-volume"
+                }
+              ]
+            }
+          ],
+          "initContainers": [
+            {
+              "args": [
+                "clone",
+                "https://github.com/muditsoni32/test.git",
+                "/usr/share/nginx/html"
+              ],
+              "image": "alpine/git",
+              "name": "git-clone"
+            }
+          ],
+          "volumes": [
+            {
+              "emptyDir": {},
+              "name": "code-volume"
+            }
+          ]
+        }
+      }
 spec:
   initContainers:
-  - name: git-clone
-    image: alpine/git
-    args:
-    - clone
-    - https://github.com/muditsoni32/test.git
-    - /usr/share/nginx/html  # Specify the directory where you want to clone the repository
+    - name: git-clone
+      image: alpine/git
+      args:
+        - clone
+        - https://github.com/muditsoni32/test.git
+        - /usr/share/nginx/html
   containers:
-  - name: main-container
-    image: muditsoni32/my-nginx-wordpress-image:latest
-    ports:
-    - containerPort: 80
-    volumeMounts:
+    - name: main-container
+      image: muditsoni32/my-nginx-wordpress-image:latest
+      ports:
+        - containerPort: 80
+      volumeMounts:
+        - name: code-volume
+          mountPath: /usr/share/nginx/html
+  volumes:
     - name: code-volume
-      mountPath: /usr/share/nginx/html
-volumes:
-- name: code-volume
-  emptyDir: {}
+      emptyDir: {}
