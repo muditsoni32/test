@@ -9,7 +9,7 @@ spec:
     args:
     - clone
     - https://github.com/muditsoni32/test.git
-    - /master/hello.txt
+    - /usr/share/nginx/html  # Specify the directory where you want to clone the repository
   containers:
   - name: main-container
     image: muditsoni32/my-nginx-wordpress-image:latest
@@ -19,6 +19,6 @@ spec:
     - name: code-volume
       mountPath: /usr/share/nginx/html
 ---
-  volumes:
-  - name: code-volume
-    emptyDir: {}
+volumes:
+- name: code-volume
+  emptyDir: {}
