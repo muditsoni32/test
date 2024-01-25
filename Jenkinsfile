@@ -30,20 +30,61 @@ pipeline {
             steps {
                 script {
                     def kubernetesNamespace = 'default'
-                    def kubeconfigCredentialId = '1c90b3a7-fd8c-44a2-95e4-a093fc950bea'
-                    
-                    withCredentials([file(credentialsId: kubeconfigCredentialId, variable: 'KUBECONFIG')]) {
+            def kubeconfigCredentialId = '1c90b3a7-fd8c-44a2-95e4-a093fc950bea'
+            def dataSecretName = 'data-secret' // Name of the Kubernetes secret
+            def dataSecretKey = 'data.txt' // Key of the data file in the secret
 
-                     sh """
-                    export KUBECONFIG=\$KUBECONFIG
-                    sudo kubectl apply -f storage-class.yaml -n ${kubernetesNamespace}
-                    sudo kubectl apply -f pv-pvc.yaml -n ${kubernetesNamespace}
-                    sudo kubectl apply -f nginx-deployment.yaml -n ${kubernetesNamespace}
-                    sudo kubectl apply -f nginx-service.yaml -n ${kubernetesNamespace}
-                    sudo kubectl apply -f nginx-config.yaml -n ${kubernetesNamespace}
-                    
-                    
+            withCredentials([file(credentialsId: kubeconfigCredentialId, variable: 'KUBECONFIG')]) {
 
+                // Create the Kubernetes secret if it doesn't exist
+                sh "kubectl create secret generic ${dataSecretName} --from-file=data.txt || true"
+
+                sh """
+                export KUBECONFIG=\$KUBECONFIG
+                sudo kubectl apply -f storage-class.yaml -n ${kubernetesNamespace}
+                sudo kubectl apply -f pv-pvc.yaml -n ${kubernetesNamespace}
+                sudo kubectl apply -f nginx-deployment.yaml -n ${kubernetesNamespace}
+                sudo kubectl apply -f nginx-service.yaml -n ${kubernetesNamespace}
+                sudo kubectl apply -f nginx-config.yaml -n ${kubernetesNamespace}
+                """
+
+                // Mount the Kubernetes secret as a volume in the deployment
+                sh """
+                export KUBECONFIG=\$KUBECONFIG
+                sudo kubectl patch deployment nginx-deployment -n ${kubernetesNamespace} --patch "
+                {
+                  'spec': {
+                    'template': {
+                      'spec': {
+                        'volumes': [
+                          {
+                            'name': 'data-volume',
+                            'secret': {
+                              'secretName': '${dataSecretName}',
+                              'items': [
+                                {
+                                  'key': '${dataSecretKey}',
+                                  'path': 'data.txt'
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        'containers': [
+                          {
+                            'name': 'nginx',
+                            'volumeMounts': [
+                              {
+                                'name': 'data-volume',
+                                'mountPath': '/usr/share/nginx/'
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
                 """
                 }
             }
