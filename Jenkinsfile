@@ -51,42 +51,42 @@ pipeline {
                         export KUBECONFIG=\$KUBECONFIG
                         sudo kubectl patch deployment nginx-deployment -n ${kubernetesNamespace} --patch '
                         {
-                          'spec': {
-                            'template': {
-                              'spec': {
-                                'volumes': [
-                                  {
-                                    'name': 'data-volume',
-                                    'secret': {
-                                      'secretName': '${dataSecretName}',
-                                      'items': [
-                                        {
-                                          'key': '${dataSecretKey}',
-                                          'path': 'data.txt'
-                                        }
-                                      ]
-                                    }
-                                  }
-                                ],
-                                'containers': [
-                                  {
-                                    'name': 'nginx',
-                                    'volumeMounts': [
-                                      {
-                                        'name': 'data-volume',
-                                        'mountPath': '/usr/share/nginx/'
-                                      }
-                                    ]
-                                  }
-                                ]
+                         "spec": {
+                          "template": {
+                           "spec": {
+                            "volumes": [
+                             {
+                              "name": "data-volume",
+                              "secret": {
+                              "secretName": "data-secret",
+                              "items": [
+                              {
+                               "key": "data.txt",
+                               "path": "data.txt"
                               }
-                            }
+                            ]
                           }
-                        }'
-                        """
+                        }
+                    ],
+                    "containers": [
+                     {
+                      "name": "nginx",
+                      "volumeMounts": [
+                      {
+                        "name": "data-volume",
+                        "mountPath": "/usr/share/nginx/"
                     }
-                }
+                  ]
+                 }
+              ]
             }
+           }
+         }
+        }'
+         """
+         }
+          }
+       }
         }
     }
 } // This is the missing closing curly brace
