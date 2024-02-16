@@ -12,7 +12,7 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    // Build Docker image1
+                    // Build Docker image
                     sh "cd /home/jenkins && docker build -t my-nginx-wordpress-image ."
                     sh "sudo docker image tag my-nginx-wordpress-image:latest muditsoni32/my-nginx-wordpress-image:latest"
 
@@ -33,10 +33,10 @@ pipeline {
                     def dataSecretKey = 'data.txt' // Key of the data file in the secret
 
                     withCredentials([file(credentialsId: kubeconfigCredentialId, variable: 'KUBECONFIG')]) {
-
                         // Create the Kubernetes secret if it doesn't exist
                         sh "kubectl create secret generic ${dataSecretName} --from-file=data.txt || true"
 
+                        // Apply Kubernetes manifests
                         sh """
                         export KUBECONFIG=\$KUBECONFIG
                         sudo kubectl apply -f storage-class.yaml -n ${kubernetesNamespace}
@@ -51,42 +51,42 @@ pipeline {
                         export KUBECONFIG=\$KUBECONFIG
                         sudo kubectl patch deployment nginx-deployment -n ${kubernetesNamespace} --patch '
                         {
-                         "spec": {
-                          "template": {
-                           "spec": {
-                            "volumes": [
-                             {
-                              "name": "data-volume",
-                              "secret": {
-                              "secretName": "data-secret",
-                              "items": [
-                              {
-                               "key": "data.txt",
-                               "path": "data.txt"
+                          "spec": {
+                            "template": {
+                              "spec": {
+                                "volumes": [
+                                  {
+                                    "name": "data-volume",
+                                    "secret": {
+                                      "secretName": "data-secret",
+                                      "items": [
+                                        {
+                                          "key": "data.txt",
+                                          "path": "data.txt"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ],
+                                "containers": [
+                                  {
+                                    "name": "nginx",
+                                    "volumeMounts": [
+                                      {
+                                        "name": "data-volume",
+                                        "mountPath": "/usr/share/nginx/"
+                                      }
+                                    ]
+                                  }
+                                ]
                               }
-                            ]
+                            }
                           }
-                        }
-                    ],
-                    "containers": [
-                     {
-                      "name": "nginx",
-                      "volumeMounts": [
-                      {
-                        "name": "data-volume",
-                        "mountPath": "/usr/share/nginx/"
+                        }'
+                        """
                     }
-                  ]
-                 }
-              ]
+                }
             }
-           }
-         }
-        }'
-         """
-         }
-          }
-       }
         }
     }
-} // This is the missing closing curly brace
+}
