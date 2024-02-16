@@ -49,7 +49,7 @@ pipeline {
                         // Mount the Kubernetes secret as a volume in the deployment
                         sh """
                         export KUBECONFIG=\$KUBECONFIG
-                        sudo kubectl patch deployment nginx-deployment -n ${kubernetesNamespace} --patch
+                        sudo kubectl patch deployment nginx-deployment -n ${kubernetesNamespace} --patch "
                         {
                           'spec': {
                             'template': {
@@ -83,6 +83,7 @@ pipeline {
                             }
                           }
                         }
+                        "
                         """
                     }
                 }
