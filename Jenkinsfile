@@ -49,40 +49,32 @@ pipeline {
                         // Mount the Kubernetes secret as a volume in the deployment
                         sh """
                         export KUBECONFIG=\$KUBECONFIG
-                        sudo kubectl patch deployment nginx-deployment -n ${kubernetesNamespace} --patch '
-                        {
-                          "spec": {
-                            "template": {
-                              "spec": {
-                                "volumes": [
+                        sudo kubectl patch deployment nginx-deployment -n ${kubernetesNamespace} --type='json' -p='[
+                          {
+                            "op": "add",
+                            "path": "/spec/template/spec/volumes/-",
+                            "value": {
+                              "name": "data-volume",
+                              "secret": {
+                                "secretName": "data-secret",
+                                "items": [
                                   {
-                                    "name": "data-volume",
-                                    "secret": {
-                                      "secretName": "data-secret",
-                                      "items": [
-                                        {
-                                          "key": "data.txt",
-                                          "path": "data.txt"
-                                        }
-                                      ]
-                                    }
-                                  }
-                                ],
-                                "containers": [
-                                  {
-                                    "name": "nginx",
-                                    "volumeMounts": [
-                                      {
-                                        "name": "data-volume",
-                                        "mountPath": "/usr/share/nginx/"
-                                      }
-                                    ]
+                                    "key": "data.txt",
+                                    "path": "data.txt"
                                   }
                                 ]
                               }
                             }
+                          },
+                          {
+                            "op": "add",
+                            "path": "/spec/template/spec/containers/0/volumeMounts/-",
+                            "value": {
+                              "name": "data-volume",
+                              "mountPath": "/usr/share/nginx/html"
+                            }
                           }
-                        }'
+                        ]'
                         """
                     }
                 }
