@@ -71,7 +71,7 @@ pipeline {
                             "path": "/spec/template/spec/containers/0/volumeMounts/-",
                             "value": {
                               "name": "data-volume",
-                              "mountPath": "/usr/share/nginx/html"
+                              "mountPath": "/mnt"
                             }
                           }
                         ]'

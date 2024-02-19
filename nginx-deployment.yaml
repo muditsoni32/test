@@ -27,4 +27,4 @@ spec:
             - containerPort: 80
           volumeMounts:
             - name: data-volume
-              mountPath: /usr/share/nginx/html
+              mountPath: /mnt
