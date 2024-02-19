@@ -12,10 +12,12 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    // Build Docker image
-                    sh "cd /home/jenkins && docker build -t my-nginx-wordpress-image ."
-                    sh "sudo docker image tag my-nginx-wordpress-image:latest muditsoni32/my-nginx-wordpress-image:latest"
+                    // Build Docker image1
+                        
+                         sh "cd /home/jenkins && docker build -t my-nginx-wordpress-image ."
+                         sh "sudo docker image tag my-nginx-wordpress-image:latest muditsoni32/my-nginx-wordpress-image:latest"
 
+                    
                     // Push Docker image to registry
                     docker.withRegistry('https://registry.hub.docker.com', '785a3777-2313-4836-81fb-3f8e1f596082') {
                         docker.image('muditsoni32/my-nginx-wordpress-image:latest').push()
@@ -29,56 +31,23 @@ pipeline {
                 script {
                     def kubernetesNamespace = 'default'
                     def kubeconfigCredentialId = '1c90b3a7-fd8c-44a2-95e4-a093fc950bea'
-                    def dataSecretName = 'data-secret' // Name of the Kubernetes secret
-                    def dataSecretKey = 'data.txt' // Key of the data file in the secret
-
+                    
                     withCredentials([file(credentialsId: kubeconfigCredentialId, variable: 'KUBECONFIG')]) {
-                        // Create the Kubernetes secret if it doesn't exist
-                        sh "kubectl create secret generic ${dataSecretName} --from-file=data.txt || true"
 
-                        // Apply Kubernetes manifests
-                        sh """
-                        export KUBECONFIG=\$KUBECONFIG
-                        sudo kubectl apply -f storage-class.yaml -n ${kubernetesNamespace}
-                       # sudo kubectl apply -f pv-pvc.yaml -n ${kubernetesNamespace}
-                        sudo kubectl apply -f nginx-deployment.yaml -n ${kubernetesNamespace}
-                        sudo kubectl apply -f nginx-service.yaml -n ${kubernetesNamespace}
-                        sudo kubectl apply -f nginx-config.yaml -n ${kubernetesNamespace}
-                        """
+                     sh """
+                    export KUBECONFIG=\$KUBECONFIG
+                    sudo kubectl apply -f storage-class.yaml -n ${kubernetesNamespace}
+                   # sudo kubectl apply -f pv-pvc.yaml -n ${kubernetesNamespace}
+                    sudo kubectl apply -f nginx-deployment.yaml -n ${kubernetesNamespace}
+                    sudo kubectl apply -f nginx-service.yaml -n ${kubernetesNamespace}
+                    sudo kubectl apply -f nginx-config.yaml -n ${kubernetesNamespace}
+                    
+                    
 
-                        // Mount the Kubernetes secret as a volume in the deployment
-                        sh """
-                        export KUBECONFIG=\$KUBECONFIG
-                        sudo kubectl patch deployment nginx-deployment -n ${kubernetesNamespace} --type='json' -p='[
-                          {
-                            "op": "add",
-                            "path": "/spec/template/spec/volumes/-",
-                            "value": {
-                              "name": "data-volume",
-                              "secret": {
-                                "secretName": "data-secret",
-                                "items": [
-                                  {
-                                    "key": "data.txt",
-                                    "path": "data.txt"
-                                  }
-                                ]
-                              }
-                            }
-                          },
-                          {
-                            "op": "add",
-                            "path": "/spec/template/spec/containers/0/volumeMounts/-",
-                            "value": {
-                              "name": "data-volume",
-                              "mountPath": "/mnt"
-                            }
-                          }
-                        ]'
-                        """
-                    }
+                """
                 }
             }
         }
     }
+}
 }

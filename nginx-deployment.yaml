@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
-  namespace: default
 spec:
   replicas: 3
   selector:
@@ -13,18 +12,8 @@ spec:
       labels:
         app: nginx
     spec:
-      volumes:
-        - name: data-volume
-          secret:
-            secretName: data-secret
-            items:
-              - key: data.txt
-                path: data.txt
       containers:
-        - name: nginx
-          image: muditsoni32/my-nginx-wordpress-image:latest
-          ports:
-            - containerPort: 80
-          volumeMounts:
-            - name: data-volume
-              mountPath: /mnt
+      - name: nginx-deployment
+        image: muditsoni32/my-nginx-wordpress-image:latest
+        ports:
+        - containerPort: 80
