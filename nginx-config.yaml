@@ -7,7 +7,7 @@ data:
     # Your NGINX configuration goes here
     server {
       listen 80;
-      server_name example.com;
+      server_name localhost;
       location / {
         root /usr/share/nginx/html;
         index index.html;
