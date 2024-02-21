@@ -6,10 +6,12 @@ spec:
   selector:
     app: nginx
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
       targetPort: 80
-    - protocol: TCP
+    - name: php-fpm
+      protocol: TCP
       port: 9000   # Port mapping for port 9000
       targetPort: 9000
   type: LoadBalancer
