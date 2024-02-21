@@ -9,4 +9,7 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
+    - protocol: TCP
+      port: 9000   # Port mapping for port 9000
+      targetPort: 9000
   type: LoadBalancer
