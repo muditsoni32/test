@@ -20,6 +20,6 @@ spec:
       targetPort: 3306
     - name: wordpress
       protocol: TCP
-      port: 8080  # MySQL default port
-      targetPort: 8080  
+      port: 8081  # MySQL default port
+      targetPort: 8081  
   type: LoadBalancer
