@@ -17,3 +17,14 @@ spec:
         image: muditsoni32/my-nginx-wordpress-image:latest
         ports:
         - containerPort: 80
+        env:
+          - name: 192.168.1.20
+            value: mysql-service
+          - name: DB_PORT
+            value: "3306"
+          - name: DB_USER
+            value: test
+          - name: DB_PASSWORD
+            value: P@$$Admin
+          - name: DB_NAME
+            value: pipeline

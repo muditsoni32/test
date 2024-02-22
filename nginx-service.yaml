@@ -14,4 +14,8 @@ spec:
       protocol: TCP
       port: 9000   # Port mapping for port 9000
       targetPort: 9000
+    - name: mysql
+      protocol: TCP
+      port: 3306  # MySQL default port
+      targetPort: 3306
   type: LoadBalancer
