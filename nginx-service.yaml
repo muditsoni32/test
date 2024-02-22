@@ -10,12 +10,4 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 80
-    - name: php-fpm
-      protocol: TCP
-      port: 9000
-      targetPort: 9000
-    - name: mysql1
-      protocol: TCP
-      port: 3306
-      targetPort: 3306  
   type: LoadBalancer
