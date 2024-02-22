@@ -17,9 +17,5 @@ spec:
     - name: mysql1
       protocol: TCP
       port: 3306
-      targetPort: 3306
-    - name: wordpress
-      protocol: TCP
-      port: 8081  # Assuming WordPress is running on port 8081
-      targetPort: 8081  
+      targetPort: 3306  
   type: LoadBalancer
