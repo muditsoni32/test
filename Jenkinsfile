@@ -41,6 +41,8 @@ pipeline {
                     sudo kubectl apply -f nginx-deployment.yaml -n ${kubernetesNamespace}
                     sudo kubectl apply -f nginx-service.yaml -n ${kubernetesNamespace}
                     sudo kubectl apply -f nginx-config.yaml -n ${kubernetesNamespace}
+                    sudo kubectl apply -f wordpress-config.yaml -n ${kubernetesNamespace}
+
                     
                     
 
